@@ -84,6 +84,17 @@ def backward_pass_concurrent():
    if rank >= ppn:
       dist.send(tensor=x_send, dst=rank-ppn)
 
+
+def send_to_right():
+   dist.send(tensor=x_send, dst=(rank+ppn)%world_size)
+def recv_from_left():
+   dist.recv(tensor=x_recv, src=(rank-ppn+world_size)%world_size)
+
+def send_to_left():
+   dist.send(tensor=x_send, dst=(rank-ppn+world_size)%world_size)
+def recv_from_right():
+   dist.recv(tensor=x_recv, src=(rank+ppn)%world_size)
+      
 tensor = None
 if (rank//ppn==0):
    tensor = 0*x
@@ -133,8 +144,36 @@ def backward_pass():
    dist.barrier()
    
 def comm_init():
-   forward_pass_concurrent()
-   backward_pass_concurrent()
+   t0 = time.time()
+   if (rank//ppn)%2==1:
+      recv_from_left()
+   else:
+      send_to_right()
+   if rank==0:
+      logger.info("F: 0->1, 2->3 ...")
+   
+   if (rank//ppn)%2==0:
+      recv_from_left()
+   else:
+      send_to_right()
+   if rank==0:
+      logger.info("F: ->0, 1->2, 3->4")      
+
+   t1 = time.time()
+   
+   if (rank//ppn)%2==1:
+      recv_from_right()
+   else:
+      send_to_left()
+   if rank==0:
+      logger.info("B: <-0, 1<-2, 3<-4")
+
+   if (rank//ppn)%2==0:
+      recv_from_right()
+   else:
+      send_to_left()
+   if rank==0:
+      logger.info("B: 0<-1, 2<-3, 4<-")
    dist.barrier()
    
 rank = dist.get_rank()
