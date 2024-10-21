@@ -19,6 +19,7 @@ parser.add_argument("--backend", default='ccl', type=str)
 parser.add_argument("--init", action='store_true')
 parser.add_argument("--niters", default=10, type=int)
 parser.add_argument("--debug", action='store_true')
+parser.add_argument('--output', default="output.log", type=str)
 args = parser.parse_args()
 
 
@@ -32,9 +33,9 @@ world_size = int(os.environ['WORLD_SIZE'])
 local_rank = int(os.environ['LOCAL_RANK'])
 master_port              = 2345
 if args.debug:
-   logging.basicConfig(filename='test_comm.log', level=logging.DEBUG)
+   logging.basicConfig(filename=args.output, level=logging.DEBUG)
 else:
-   logging.basicConfig(filename='test_comm.log', level=logging.INFO)
+   logging.basicConfig(filename=args.output, level=logging.INFO)
 logger = logging.getLogger()
 #logger = logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
