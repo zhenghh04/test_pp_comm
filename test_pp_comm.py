@@ -3,12 +3,10 @@ import logging
 import sys
 
 t1 = datetime.datetime.now()
-import intel_extension_for_pytorch
 import torch
 import torch.nn.parallel
 import os
 import socket
-import oneccl_bindings_for_pytorch
 import torch.distributed as dist
 import argparse
 
@@ -20,7 +18,11 @@ parser.add_argument("--init", action='store_true')
 parser.add_argument("--niters", default=10, type=int)
 parser.add_argument("--debug", action='store_true')
 parser.add_argument('--output', default="output.log", type=str)
+parser.add_argument("--device", default='xpu', type=str)
 args = parser.parse_args()
+if args.device == "xpu":
+   import intel_extension_for_pytorch
+   import oneccl_bindings_for_pytorch
 
 if args.debug:
    logging.basicConfig(filename=args.output, level="DEBUG")
@@ -43,7 +45,6 @@ if (rank==0):
    logger.info(master_addr)
    logger.info(f"{torch.__version__}")
    logger.info(f"{torch.__file__}")
-   
 
 os.environ["MASTER_PORT"]   = str(master_port)
 
@@ -60,7 +61,10 @@ assert(rank == dist_my_rank)
 assert(world_size == dist_world_size)
 
 def get_default_device():
-   return torch.device(f"xpu:{local_rank}")
+   if args.device=="xpu":
+      return torch.device(f"xpu:{local_rank}")
+   else:
+      return torch.device(f"cuda:{local_rank}")
 
 device  = get_default_device()
 ppn = world_size // args.pp
