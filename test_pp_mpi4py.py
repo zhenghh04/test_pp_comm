@@ -11,6 +11,7 @@ import socket
 import oneccl_bindings_for_pytorch
 import torch.distributed as dist
 import argparse
+from torch.profiler import profile, record_function, ProfilerActivity
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--pp", default=1, type=int)
@@ -20,6 +21,7 @@ parser.add_argument("--init", action='store_true')
 parser.add_argument("--niters", default=10, type=int)
 parser.add_argument("--debug", action='store_true')
 parser.add_argument('--output', default="output.log", type=str)
+parser.add_argument("--trace", default=None, type=str)
 args = parser.parse_args()
 
 if args.debug:
@@ -174,15 +176,13 @@ def comm_init():
 
    
 import time
-
-if __name__=='__main__':
+def main():
    if args.init:
       t0 = time.time()
       comm_init()
       t1 = time.time()
       if rank ==0:
          logger.info(f"Time for init_comm: {t1 - t0:.8f}")
-      
    for iter in range(args.niters):
       tensor = 0*x
       t0 = time.time()    
@@ -198,3 +198,16 @@ if __name__=='__main__':
       t2 = time.time()
       if rank ==0:
          logger.info(f"iter = {iter}, fwd: {t1 - t0:.8f}, bwd: {t2 - t1:.8f}, total: {t2-t0:.8f}")
+
+if __name__=='__main__':
+   if args.trace is not None:
+      activities = [ProfilerActivity.CPU]
+      if args.device == "xpu":
+         activities.append(ProfilerActivity.XPU)
+      elif:
+         activities.append(ProfilerActivity.GPU)
+      with profile(activities=activities, record_shapes=True) as prof:
+         main()
+      prof.export_chrome_trace(args.trace)
+   else:
+      main()
