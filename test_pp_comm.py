@@ -198,9 +198,7 @@ def comm_init():
    
 import time
 
-
-
-def main()   
+def main():
    if args.init:
       t0 = time.time()
       comm_init()
