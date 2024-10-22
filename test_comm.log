@@ -1,0 +1,165 @@
+INFO:root:imported all the libraries in 2.793377 seconds
+INFO:root:x4418c2s2b0n0
+INFO:root:2.3.1+cxx11.abi
+INFO:root:/opt/aurora/24.180.0/frameworks/aurora_nre_models_frameworks-2024.2.1_u1/lib/python3.10/site-packages/torch/__init__.py
+INFO:root:torch.distributed.init_process_group (time : 5.71100)
+INFO:root:PP = 2, 12 per pp group
+INFO:root:iter = 0, fwd: 0.25894332, bwd: 0.02269745
+INFO:root:iter = 1, fwd: 0.00112295, bwd: 0.00060940
+INFO:root:iter = 2, fwd: 0.00047755, bwd: 0.00053430
+INFO:root:iter = 3, fwd: 0.00047803, bwd: 0.00046945
+INFO:root:iter = 4, fwd: 0.00044322, bwd: 0.00047684
+INFO:root:iter = 5, fwd: 0.00042439, bwd: 0.00047755
+INFO:root:iter = 6, fwd: 0.00047374, bwd: 0.00045633
+INFO:root:iter = 7, fwd: 0.00044346, bwd: 0.00045443
+INFO:root:iter = 8, fwd: 0.00043130, bwd: 0.00046182
+INFO:root:iter = 9, fwd: 0.00039244, bwd: 0.00044847
+INFO:root:imported all the libraries in 2.64094 seconds
+INFO:root:x4418c2s2b0n0
+INFO:root:2.3.1+cxx11.abi
+INFO:root:/opt/aurora/24.180.0/frameworks/aurora_nre_models_frameworks-2024.2.1_u1/lib/python3.10/site-packages/torch/__init__.py
+INFO:root:torch.distributed.init_process_group (time : 3.23534)
+INFO:root:PP = 2, 12 per pp group
+INFO:root:Time for init_comm: 0.25594950
+INFO:root:iter = 0, fwd: 0.02247357, bwd: 0.02227545
+INFO:root:iter = 1, fwd: 0.00110316, bwd: 0.00061798
+INFO:root:iter = 2, fwd: 0.00044036, bwd: 0.00050831
+INFO:root:iter = 3, fwd: 0.00046992, bwd: 0.00047493
+INFO:root:iter = 4, fwd: 0.00040698, bwd: 0.00045800
+INFO:root:iter = 5, fwd: 0.00046158, bwd: 0.00046301
+INFO:root:iter = 6, fwd: 0.00039172, bwd: 0.00046659
+INFO:root:iter = 7, fwd: 0.00046992, bwd: 0.00045156
+INFO:root:iter = 8, fwd: 0.00043607, bwd: 0.00043917
+INFO:root:iter = 9, fwd: 0.00038695, bwd: 0.00045633
+INFO:root:imported all the libraries in 2.532372 seconds
+INFO:root:x4505c3s4b0n0
+INFO:root:2.3.1+cxx11.abi
+INFO:root:/opt/aurora/24.180.0/frameworks/aurora_nre_models_frameworks-2024.2.1_u1/lib/python3.10/site-packages/torch/__init__.py
+INFO:root:imported all the libraries in 2.685909 seconds
+INFO:root:x4705c1s0b0n0
+INFO:root:2.3.1+cxx11.abi
+INFO:root:/opt/aurora/24.180.0/frameworks/aurora_nre_models_frameworks-2024.2.1_u1/lib/python3.10/site-packages/torch/__init__.py
+INFO:root:imported all the libraries in 2.632095 seconds
+INFO:root:x4516c2s1b0n0
+INFO:root:2.3.1+cxx11.abi
+INFO:root:/opt/aurora/24.180.0/frameworks/aurora_nre_models_frameworks-2024.2.1_u1/lib/python3.10/site-packages/torch/__init__.py
+INFO:root:imported all the libraries in 2.725598 seconds
+INFO:root:x4511c5s2b0n0
+INFO:root:2.3.1+cxx11.abi
+INFO:root:/opt/aurora/24.180.0/frameworks/aurora_nre_models_frameworks-2024.2.1_u1/lib/python3.10/site-packages/torch/__init__.py
+INFO:root:torch.distributed.init_process_group (time : 63.37628)
+INFO:root:PP = 8, 12 per pp group
+INFO:root:torch.distributed.init_process_group (time : 3.50705)
+INFO:root:PP = 4, 12 per pp group
+INFO:root:iter = 0, fwd: 0.37064862, bwd: 0.05068111
+INFO:root:iter = 1, fwd: 0.00151491, bwd: 0.00136137
+INFO:root:iter = 2, fwd: 0.00100827, bwd: 0.00123167
+INFO:root:iter = 3, fwd: 0.00100279, bwd: 0.00116396
+INFO:root:iter = 4, fwd: 0.00094271, bwd: 0.00112987
+INFO:root:iter = 5, fwd: 0.00097799, bwd: 0.00117898
+INFO:root:iter = 6, fwd: 0.00096703, bwd: 0.00112987
+INFO:root:iter = 7, fwd: 0.00091076, bwd: 0.00110936
+INFO:root:iter = 8, fwd: 0.00095487, bwd: 0.00110531
+INFO:root:iter = 9, fwd: 0.00096202, bwd: 0.00114059
+INFO:root:torch.distributed.init_process_group (time : 4.34152)
+INFO:root:PP = 16, 12 per pp group
+INFO:root:iter = 0, fwd: 1.29962564, bwd: 0.43587184
+INFO:root:iter = 1, fwd: 0.00343204, bwd: 0.00294805
+INFO:root:iter = 2, fwd: 0.00209260, bwd: 0.00246477
+INFO:root:iter = 3, fwd: 0.00189757, bwd: 0.00236964
+INFO:root:iter = 4, fwd: 0.00196981, bwd: 0.00229239
+INFO:root:iter = 5, fwd: 0.00189233, bwd: 0.00227904
+INFO:root:iter = 6, fwd: 0.00189734, bwd: 0.00225782
+INFO:root:iter = 7, fwd: 0.00193405, bwd: 0.00222182
+INFO:root:iter = 8, fwd: 0.00188994, bwd: 0.00220442
+INFO:root:iter = 9, fwd: 0.00198960, bwd: 0.00231695
+INFO:root:iter = 0, fwd: 1.56802249, bwd: 0.22214532
+INFO:root:iter = 1, fwd: 0.00805664, bwd: 0.00573921
+INFO:root:iter = 2, fwd: 0.00406480, bwd: 0.00466132
+INFO:root:iter = 3, fwd: 0.00387168, bwd: 0.00444603
+INFO:root:iter = 4, fwd: 0.00385237, bwd: 0.00451565
+INFO:root:iter = 5, fwd: 0.00367427, bwd: 0.00449252
+INFO:root:iter = 6, fwd: 0.00372291, bwd: 0.00455856
+INFO:root:iter = 7, fwd: 0.00371385, bwd: 0.00448918
+INFO:root:iter = 8, fwd: 0.00373411, bwd: 0.00434256
+INFO:root:iter = 9, fwd: 0.00374913, bwd: 0.00440860
+INFO:root:torch.distributed.init_process_group (time : 6.34524)
+INFO:root:PP = 32, 12 per pp group
+INFO:root:imported all the libraries in 2.612329 seconds
+INFO:root:x4516c2s1b0n0
+INFO:root:2.3.1+cxx11.abi
+INFO:root:/opt/aurora/24.180.0/frameworks/aurora_nre_models_frameworks-2024.2.1_u1/lib/python3.10/site-packages/torch/__init__.py
+INFO:root:imported all the libraries in 2.656834 seconds
+INFO:root:x4705c1s0b0n0
+INFO:root:2.3.1+cxx11.abi
+INFO:root:/opt/aurora/24.180.0/frameworks/aurora_nre_models_frameworks-2024.2.1_u1/lib/python3.10/site-packages/torch/__init__.py
+INFO:root:iter = 0, fwd: 3.79097319, bwd: 0.49474549
+INFO:root:iter = 1, fwd: 0.01955962, bwd: 0.01570749
+INFO:root:iter = 2, fwd: 0.01149726, bwd: 0.01255465
+INFO:root:iter = 3, fwd: 0.01045036, bwd: 0.01170492
+INFO:root:iter = 4, fwd: 0.00922942, bwd: 0.01138663
+INFO:root:iter = 5, fwd: 0.00882006, bwd: 0.01168656
+INFO:root:iter = 6, fwd: 0.00878763, bwd: 0.01097655
+INFO:root:iter = 7, fwd: 0.00870347, bwd: 0.01120901
+INFO:root:iter = 8, fwd: 0.00869942, bwd: 0.01077700
+INFO:root:iter = 9, fwd: 0.00870490, bwd: 0.01051736
+INFO:root:torch.distributed.init_process_group (time : 3.76547)
+INFO:root:PP = 4, 12 per pp group
+INFO:root:Time for init_comm: 0.32390141
+INFO:root:iter = 0, fwd: 0.06625080, bwd: 0.04970026
+INFO:root:iter = 1, fwd: 0.00159192, bwd: 0.00135875
+INFO:root:iter = 2, fwd: 0.00101376, bwd: 0.00120330
+INFO:root:iter = 3, fwd: 0.00094891, bwd: 0.00118995
+INFO:root:iter = 4, fwd: 0.00095510, bwd: 0.00122166
+INFO:root:iter = 5, fwd: 0.00095534, bwd: 0.00115132
+INFO:root:iter = 6, fwd: 0.00092888, bwd: 0.00117183
+INFO:root:iter = 7, fwd: 0.00093937, bwd: 0.00112128
+INFO:root:iter = 8, fwd: 0.00097561, bwd: 0.00114799
+INFO:root:iter = 9, fwd: 0.00090575, bwd: 0.00116658
+INFO:root:imported all the libraries in 2.558428 seconds
+INFO:root:x4505c3s4b0n0
+INFO:root:2.3.1+cxx11.abi
+INFO:root:/opt/aurora/24.180.0/frameworks/aurora_nre_models_frameworks-2024.2.1_u1/lib/python3.10/site-packages/torch/__init__.py
+INFO:root:torch.distributed.init_process_group (time : 4.60494)
+INFO:root:PP = 16, 12 per pp group
+INFO:root:Time for init_comm: 1.45720863
+INFO:root:iter = 0, fwd: 0.32611251, bwd: 0.22170496
+INFO:root:iter = 1, fwd: 0.00635719, bwd: 0.00538802
+INFO:root:iter = 2, fwd: 0.00391626, bwd: 0.00460839
+INFO:root:iter = 3, fwd: 0.00371027, bwd: 0.00452280
+INFO:root:iter = 4, fwd: 0.00386477, bwd: 0.00439239
+INFO:root:iter = 5, fwd: 0.00361586, bwd: 0.00441742
+INFO:root:iter = 6, fwd: 0.00356293, bwd: 0.00461292
+INFO:root:iter = 7, fwd: 0.00384140, bwd: 0.00430298
+INFO:root:iter = 8, fwd: 0.00350046, bwd: 0.00431108
+INFO:root:iter = 9, fwd: 0.00356960, bwd: 0.00439501
+INFO:root:torch.distributed.init_process_group (time : 4.00214)
+INFO:root:imported all the libraries in 2.593672 seconds
+INFO:root:x4511c5s2b0n0
+INFO:root:2.3.1+cxx11.abi
+INFO:root:/opt/aurora/24.180.0/frameworks/aurora_nre_models_frameworks-2024.2.1_u1/lib/python3.10/site-packages/torch/__init__.py
+INFO:root:PP = 8, 12 per pp group
+INFO:root:Time for init_comm: 0.47237468
+INFO:root:iter = 0, fwd: 0.15140510, bwd: 0.10458779
+INFO:root:iter = 1, fwd: 0.00300980, bwd: 0.00253391
+INFO:root:iter = 2, fwd: 0.00182891, bwd: 0.00222826
+INFO:root:iter = 3, fwd: 0.00182724, bwd: 0.00218940
+INFO:root:iter = 4, fwd: 0.00175142, bwd: 0.00211382
+INFO:root:iter = 5, fwd: 0.00177598, bwd: 0.00214577
+INFO:root:iter = 6, fwd: 0.00176740, bwd: 0.00210762
+INFO:root:iter = 7, fwd: 0.00175881, bwd: 0.00212169
+INFO:root:iter = 8, fwd: 0.00176454, bwd: 0.00210547
+INFO:root:iter = 9, fwd: 0.00172925, bwd: 0.00214911
+INFO:root:torch.distributed.init_process_group (time : 6.36315)
+INFO:root:PP = 32, 12 per pp group
+INFO:root:Time for init_comm: 3.42996144
+INFO:root:iter = 0, fwd: 0.68408608, bwd: 0.46701384
+INFO:root:iter = 1, fwd: 0.01683998, bwd: 0.01520061
+INFO:root:iter = 2, fwd: 0.01207376, bwd: 0.01335526
+INFO:root:iter = 3, fwd: 0.01139522, bwd: 0.01330018
+INFO:root:iter = 4, fwd: 0.00949168, bwd: 0.01170659
+INFO:root:iter = 5, fwd: 0.00920582, bwd: 0.01137614
+INFO:root:iter = 6, fwd: 0.00884557, bwd: 0.01087070
+INFO:root:iter = 7, fwd: 0.00887609, bwd: 0.01059651
+INFO:root:iter = 8, fwd: 0.00872850, bwd: 0.01085758
+INFO:root:iter = 9, fwd: 0.00850224, bwd: 0.01006699
