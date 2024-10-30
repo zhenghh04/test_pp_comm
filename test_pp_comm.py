@@ -40,6 +40,10 @@ class Model:
       self.logger = logger
       self.tensor = torch.zeros(self.num_layers*1024).to(device, non_blocking=True)
       assert(self.tensor[0]==0)
+      t0 = time.time()
+      dist.broadcast(self.tensor, src=0)
+      if self.rank==0:
+         self.logger.info(f"broadcast in model.init: {time.time()-t0:.8f}")
    def reset(self):
       self.tensor = torch.zeros(self.num_layers*1024).to(self.device, non_blocking=True)
       
