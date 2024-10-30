@@ -146,7 +146,7 @@ class Model:
       dist.barrier()      
       if self.rank==0:
          self.logger.info(f"B: 0, 1<-2, 3<-4,  ...: {time.time() - t0:.8f}")
-   
+      dist.barrier()   
 import time
 
 def set_args():
@@ -210,7 +210,6 @@ def get_default_device():
       return torch.device(f"cuda:{local_rank}")
 
 def main():
-
    device  = get_default_device()
    ppn = world_size // args.pp
    my_layer = rank//ppn
