@@ -130,7 +130,7 @@ def forward_pass_layer(L, tensor):
       dist.recv(tensor=tensor, src=rank-ppn)
       if my_layer_local_rank==0:      
          logger.debug(f"Forward {L+1} received: {tensor[0]}")
-      tensor = tensor + x
+      tensor = tensor + 1
       if my_layer_local_rank==0:      
          logger.debug(f"Forward {L+1} after compute: {tensor[0]}, added {x[0]}")
    elif my_layer == L:
