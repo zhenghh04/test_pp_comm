@@ -102,9 +102,9 @@ class Model:
       dist.barrier()
       x = torch.ones(1024).to(self.device, non_blocking=True)
       t0 = time.time()
-      dist.all_reduce(x)
+      dist.broadcast(x, src=0)
       if self.rank==0:
-         self.logger.info(f"allreduce in comm_init: {time.time()-t0:.8f}")
+         self.logger.info(f"broadcast in comm_init: {time.time()-t0:.8f}")
       t0 = time.time()
       if (self.my_pp_rank)%2==1:
          self.logger.debug(f"L{self.my_pp_rank}-r{self.my_pp_group} recv issued at {time.time()-t0:.8f}")      
