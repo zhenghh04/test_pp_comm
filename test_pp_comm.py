@@ -132,7 +132,7 @@ def forward_pass_layer(L, tensor):
          logger.debug(f"Forward {L+1} received: {tensor[0]}")
       tensor = tensor + 1
       if my_layer_local_rank==0:      
-         logger.debug(f"Forward {L+1} after compute: {tensor[0]}, added {x[0]}")
+         logger.debug(f"Forward {L+1} after compute: {tensor[0]}, added 1")
    elif my_layer == L:
       dist.send(tensor=tensor, dst=rank+ppn)
       if my_layer_local_rank==0:
@@ -147,7 +147,7 @@ def backward_pass_layer(L, tensor):
          logger.debug(f"Backward {L-1} received: {tensor[0]}")
       tensor = tensor + 2
       if my_layer_local_rank==0:      
-         logger.debug(f"Backward {L+1} after compute: {tensor[0]}, added {2*x[0]}")
+         logger.debug(f"Backward {L+1} after compute: {tensor[0]}, added 2")
    elif my_layer == L:
       dist.send(tensor=tensor, dst=rank-ppn)
       if my_layer_local_rank==0:      
@@ -219,7 +219,7 @@ def comm_init():
 import time
 
 def main():
-   x = torch.ones(1024).to(device, non_blocking=True)
+   tensor = torch.zeros(1024).to(device, non_blocking=True)   
    if args.init_comm:
       t0 = time.time()
       comm_init()
@@ -228,11 +228,6 @@ def main():
          logger.info(f"Time for init_comm: {t1 - t0:.8f}")
    if args.init_comp:
       comp_init()
-   tensor = torch.zeros(1024).to(device, non_blocking=True)
-   # This is to initialize the add kernel
-   x += tensor
-   # This is to initialize the mul kernel   
-   x = x*1
    for iter in range(args.niters):
       t0 = time.time()    
       forward_pass(tensor)
@@ -247,6 +242,7 @@ def main():
       t2 = time.time()
       if rank ==0:
          logger.info(f"iter = {iter}, fwd: {t1 - t0:.8f}, bwd: {t2 - t1:.8f}, total: {t2-t0:.8f}")
+         
 if __name__=='__main__':
    activities=[ProfilerActivity.CPU]
    if args.device == "xpu":
