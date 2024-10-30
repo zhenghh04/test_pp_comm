@@ -40,4 +40,4 @@ echo "w/ comm init"
 mpiexec -np $((PBS_JOBSIZE*PPN)) --ppn $PPN ./local_rank.sh python3 ./test_pp_comm.py --pp $PBS_JOBSIZE --init-comm --output $OUTPUT/comm-w-init-comm.log --trace $OUTPUT/torch-w-init-comm
 
 echo "w/ comm and comp init"
-mpiexec -np $((PBS_JOBSIZE*PPN)) --ppn $PPN ./local_rank.sh python3 ./test_pp_comm.py --pp $PBS_JOBSIZE --init-comm --init-comp --output $OUTPUT/comm-w-init-comm-comp.log --trace $OUTPUT/torch-w-init-comm-comp
+mpiexec -np $((PBS_JOBSIZE*PPN)) --ppn $PPN ./local_rank.sh python3 ./test_pp_comm.py --pp $PBS_JOBSIZE --init-comm --init-comp --output $OUTPUT/comm-w-init-comp-comm.log --trace $OUTPUT/torch-w-init-comp-comm
