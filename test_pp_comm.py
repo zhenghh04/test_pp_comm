@@ -249,7 +249,7 @@ if __name__=='__main__':
    else:
       activities.append(ProfilerActivity.CUDA)
    if args.trace is not None:
-      with profile(activities=[ProfilerActivity.CPU], record_shapes=True) as prof:
+      with profile(activities=activities, record_shapes=True) as prof:
          main()
       prof.export_chrome_trace(args.trace)
    else:
