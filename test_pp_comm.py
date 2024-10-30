@@ -237,11 +237,11 @@ def main():
       if rank ==0:
          logger.info(f"Time for init comp: {t1 - t0:.8f}")
 
+   dist.barrier()
    for it in range(args.niters):
       t0 = time.time()
       model.reset()
       model.forward()
-      dist.barrier()   
       # sanity check
       assert(model.tensor[0]==model.my_pp_rank+1)
       t1 = time.time()
