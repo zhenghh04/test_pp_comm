@@ -26,7 +26,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--pp", default=1, type=int)
 parser.add_argument("--tp", default=1, type=int)
 parser.add_argument("--backend", default='ccl', type=str)
-parser.add_argument("--init", action='store_true')
+parser.add_argument("--init-comm", action='store_true')
+parser.add_argument("--init-comp", action='store_true')
 parser.add_argument("--niters", default=10, type=int)
 parser.add_argument("--debug", action='store_true')
 parser.add_argument('--output', default="output.log", type=str)
@@ -84,9 +85,6 @@ ppn = world_size // args.pp
 my_layer = rank//ppn
 my_layer_local_rank = rank%ppn
 
-x = torch.ones(1024).to(device, non_blocking=True)
-x_send = torch.ones(1024).to(device, non_blocking=True)
-x_recv = torch.empty(1024).to(device, non_blocking=True)
 if (rank==0):
    logger.info(f"PP = {args.pp}, {ppn} per pp group")
 
@@ -106,32 +104,27 @@ def backward_pass_concurrent():
 tensor = torch.empty(1024).to(device, non_blocking=True)
 
 @trace_func
-def send_to_right():
-   global tensor
+def send_to_right(tensor):
    if my_layer != args.pp - 1:
       dist.send(tensor=tensor, dst=(rank+ppn)%world_size)
 
 @trace_func
-def recv_from_left():
-   global tensor
+def recv_from_left(tensor):
    if my_layer != 0:
       dist.recv(tensor=tensor, src=(rank-ppn+world_size)%world_size)
 
 @trace_func
-def send_to_left():
-   global tensor
+def send_to_left(tensor):
    if my_layer != 0:   
       dist.send(tensor=tensor, dst=(rank-ppn+world_size)%world_size)
 
 @trace_func
-def recv_from_right():
-   global tensor
+def recv_from_right(tensor):
    if my_layer != args.pp - 1:         
       dist.recv(tensor=tensor, src=(rank+ppn)%world_size)
 
 @trace_func      
-def forward_pass_layer(L):
-   global tensor
+def forward_pass_layer(L, tensor):
    assert(L<args.pp)
    if my_layer == L+1:
       dist.recv(tensor=tensor, src=rank-ppn)
@@ -146,14 +139,13 @@ def forward_pass_layer(L):
          logger.debug(f"Forward {L} sent: {tensor[0]}")      
 
 @trace_func   
-def backward_pass_layer(L):
-   global tensor
+def backward_pass_layer(L, tensor):
    assert(L>0)
    if my_layer == L-1:
       dist.recv(tensor=tensor, src=rank+ppn)
       if my_layer_local_rank==0:      
          logger.debug(f"Backward {L-1} received: {tensor[0]}")
-      tensor = tensor + 2*x
+      tensor = tensor + 2
       if my_layer_local_rank==0:      
          logger.debug(f"Backward {L+1} after compute: {tensor[0]}, added {2*x[0]}")
    elif my_layer == L:
@@ -162,26 +154,33 @@ def backward_pass_layer(L):
          logger.debug(f"Backward {L} sent: {tensor[0]}")
 
 @trace_func
-def forward_pass():
+def forward_pass(tensor):
    for L in range(0, args.pp-1):
-      forward_pass_layer(L)
+      forward_pass_layer(L, tensor)
 
 @trace_func
-def backward_pass():
+def backward_pass(tensor):
    for L in range(args.pp-1, 0, -1):
-      backward_pass_layer(L)
+      backward_pass_layer(L, tensor)
 
+@trace_func
+def comp_init():
+   x = torch.ones(1024).to(device, non_blocking=True)
+   x += 0
+   x *= 0
 @trace_func   
 def comm_init():
-   dist.barrier()   
+   dist.barrier()
+   x = torch.ones(1024).to(device, non_blocking=True)
+   dist.allreduce(x)
    t0 = time.time()
    if (my_layer)%2==1:
       logger.debug(f"L{my_layer}-r{my_layer_local_rank} recv issued at {time.time()-t0:.8f}")      
-      recv_from_left()
+      recv_from_left(tensor)
       logger.debug(f"L{my_layer}-r{my_layer_local_rank} received at {time.time()-t0:.8f}")
    else:
       logger.debug(f"L{my_layer}-r{my_layer_local_rank} send issued at {time.time()-t0:.8f}")            
-      send_to_right()
+      send_to_right(tensor)
       logger.debug(f"L{my_layer}-r{my_layer_local_rank} sent at {time.time()-t0:.8f}")      
    dist.barrier()
    t1 = time.time()
@@ -190,18 +189,18 @@ def comm_init():
 
    t0 = time.time()
    if (my_layer)%2==0:
-      recv_from_right()
+      recv_from_right(tensor)
    else:
-      send_to_left()
+      send_to_left(tensor)
    if rank==0:
       logger.info(f"B: 0<-1, 2<-3, 4<- ...: {time.time() - t0:.8f}")
    dist.barrier()
 
    t0 = time.time()
    if (my_layer)%2==0:
-      recv_from_left()
+      recv_from_left(tensor)
    else:
-      send_to_right()
+      send_to_right(tensor)
    dist.barrier()
    t1 = time.time()      
    if rank==0:
@@ -209,9 +208,9 @@ def comm_init():
 
    t0 = time.time()
    if (my_layer)%2==1:
-      recv_from_right()
+      recv_from_right(tensor)
    else:
-      send_to_left()
+      send_to_left(tensor)
    dist.barrier()      
    if rank==0:
       logger.info(f"B: 0, 1<-2, 3<-4,  ...: {time.time() - t0:.8f}")
@@ -220,22 +219,28 @@ def comm_init():
 import time
 
 def main():
-   if args.init:
+   x = torch.ones(1024).to(device, non_blocking=True)
+   if args.init_comm:
       t0 = time.time()
       comm_init()
       t1 = time.time()
       if rank ==0:
          logger.info(f"Time for init_comm: {t1 - t0:.8f}")
-      
+   if args.init_comp:
+      comp_init()
+   tensor = torch.zeros(1024).to(device, non_blocking=True)
+   # This is to initialize the add kernel
+   x += tensor
+   # This is to initialize the mul kernel   
+   x = x*1
    for iter in range(args.niters):
-      tensor = 0*x
       t0 = time.time()    
-      forward_pass()
+      forward_pass(tensor)
       dist.barrier()   
       # sanity check
       assert(tensor[0]==my_layer)
       t1 = time.time()
-      backward_pass()
+      backward_pass(tensor)
       # sanity check
       assert(tensor[0]==(args.pp - 1 + 2*(args.pp - 1 -  my_layer)))
       dist.barrier()
@@ -251,7 +256,7 @@ if __name__=='__main__':
    if args.trace is not None:
       with profile(activities=activities, record_shapes=True) as prof:
          main()
-      prof.export_chrome_trace(args.trace)
+      prof.export_chrome_trace(f"{args.trace}-{rank}-of-{world_size}.json")
    else:
       main()
 
