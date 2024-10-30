@@ -207,6 +207,7 @@ if __name__=='__main__':
       elif:
          activities.append(ProfilerActivity.GPU)
       with profile(activities=activities, record_shapes=True) as prof:
+         logger.info(f"activities: {activities}")         
          main()
       prof.export_chrome_trace(args.trace)
    else:
