@@ -12,6 +12,15 @@ import argparse
 from torch.profiler import profile, record_function, ProfilerActivity
 
 
+def trace_func(func):
+   def wrapper(*args, **kwargs):
+      try:
+         function_name = func.__func__.__qualname__
+      except:
+         function_name = func.__qualname__
+      with record_function(function_name):
+         return func(*args, **kwargs)
+   return wrapper
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--pp", default=1, type=int)
@@ -96,24 +105,31 @@ def backward_pass_concurrent():
 
 tensor = torch.empty(1024).to(device, non_blocking=True)
 
+@trace_func
 def send_to_right():
    global tensor
    if my_layer != args.pp - 1:
       dist.send(tensor=tensor, dst=(rank+ppn)%world_size)
+
+@trace_func
 def recv_from_left():
    global tensor
    if my_layer != 0:
       dist.recv(tensor=tensor, src=(rank-ppn+world_size)%world_size)
 
+@trace_func
 def send_to_left():
    global tensor
    if my_layer != 0:   
       dist.send(tensor=tensor, dst=(rank-ppn+world_size)%world_size)
+
+@trace_func
 def recv_from_right():
    global tensor
    if my_layer != args.pp - 1:         
       dist.recv(tensor=tensor, src=(rank+ppn)%world_size)
-      
+
+@trace_func      
 def forward_pass_layer(L):
    global tensor
    assert(L<args.pp)
@@ -128,7 +144,8 @@ def forward_pass_layer(L):
       dist.send(tensor=tensor, dst=rank+ppn)
       if my_layer_local_rank==0:
          logger.debug(f"Forward {L} sent: {tensor[0]}")      
-   
+
+@trace_func   
 def backward_pass_layer(L):
    global tensor
    assert(L>0)
@@ -144,13 +161,17 @@ def backward_pass_layer(L):
       if my_layer_local_rank==0:      
          logger.debug(f"Backward {L} sent: {tensor[0]}")
 
+@trace_func
 def forward_pass():
    for L in range(0, args.pp-1):
       forward_pass_layer(L)
+
+@trace_func
 def backward_pass():
    for L in range(args.pp-1, 0, -1):
       backward_pass_layer(L)
-   
+
+@trace_func   
 def comm_init():
    dist.barrier()   
    t0 = time.time()
@@ -229,8 +250,7 @@ if __name__=='__main__':
       activities.append(ProfilerActivity.CUDA)
    if args.trace is not None:
       with profile(activities=[ProfilerActivity.CPU], record_shapes=True) as prof:
-         with record_function("comm_init"):
-            main()
+         main()
       prof.export_chrome_trace(args.trace)
    else:
       main()
