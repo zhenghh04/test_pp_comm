@@ -172,7 +172,7 @@ def comp_init():
 def comm_init():
    dist.barrier()
    x = torch.ones(1024).to(device, non_blocking=True)
-   dist.allreduce(x)
+   dist.all_reduce(x)
    t0 = time.time()
    if (my_layer)%2==1:
       logger.debug(f"L{my_layer}-r{my_layer_local_rank} recv issued at {time.time()-t0:.8f}")      
